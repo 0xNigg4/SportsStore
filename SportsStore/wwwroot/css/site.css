@@ -1,0 +1,38 @@
+/* wwwroot/css/site.css */
+.navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.card-header {
+    font-weight: bold;
+}
+
+.btn-primary {
+    background-color: #007bff;
+}
+
+.input-validation-error {
+    border-color: red;
+    background-color: #fee;
+}
+
+.field-validation-error {
+    color: red;
+}
+
+.card {
+    margin-bottom: 1rem;
+}
+
+.card-body {
+    padding: 1rem;
+}
+
+.card-footer {
+    padding: 0.5rem 1rem;
+}
+
+.btn-block {
+    margin-bottom: 0.5rem;
+}

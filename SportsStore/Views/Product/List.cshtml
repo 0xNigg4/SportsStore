@@ -1,0 +1,47 @@
+﻿@model ProductsListViewModel
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-12">
+            <h2>
+                @Model.CurrentCategory ?? "All Products"
+            </h2>
+        </div>
+    </div>
+
+    <div class="row">
+        @foreach (var p in Model.Products)
+        {
+            <div class="col-md-4 mb-4">
+                <div class="card h-100">
+                    <div class="card-header">
+                        <h4>@p.Name</h4>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-text">@p.Description</p>
+                        <h5 class="card-title">@p.Price.ToString("c")</h5>
+                    </div>
+                    <div class="card-footer">
+                        <form id="@p.ProductID" asp-action="AddToCart" asp-controller="Cart" method="post">
+                            <input type="hidden" name="productId" value="@p.ProductID" />
+                            <input type="hidden" name="returnUrl" value="@ViewContext.HttpContext.Request.PathAndQuery()" />
+                            <button type="submit" class="btn btn-success btn-sm">
+                                Add To Cart
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <div class="row">
+        <div class="col-md-12">
+            <div page-model="@Model.PagingInfo" page-action="List" page-classes-enabled="true"
+                 page-class="btn" page-class-normal="btn-outline-secondary"
+                 page-class-selected="btn-primary" page-url-category="@Model.CurrentCategory"
+                 class="btn-group pull-right m-1">
+            </div>
+        </div>
+    </div>
+</div>
