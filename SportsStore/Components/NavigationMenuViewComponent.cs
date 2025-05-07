@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using SportsStore.Models;
 using System.Linq;
+using SportsStore.Models;
 
 namespace SportsStore.Components
 {
@@ -16,7 +16,6 @@ namespace SportsStore.Components
         public IViewComponentResult Invoke()
         {
             ViewBag.SelectedCategory = RouteData?.Values["category"];
-
             return View(repository.Products
                 .Select(x => x.Category)
                 .Distinct()

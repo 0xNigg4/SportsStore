@@ -10,27 +10,28 @@ namespace SportsStore.Models
         public int OrderID { get; set; }
 
         [BindNever]
-        public ICollection<CartLine> Lines { get; set; }
+        public ICollection<CartLine> Lines { get; set; } = new List<CartLine>();
 
-        [Required(ErrorMessage = "Please enter your name")]
-        public string Name { get; set; }
+        [Required(ErrorMessage = "Please enter a name")]
+        public string Name { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Please enter your address")]
-        public string Line1 { get; set; }
-        public string Line2 { get; set; }
-        public string Line3 { get; set; }
+        [Required(ErrorMessage = "Please enter the first address line")]
+        [Display(Name = "Address Line 1")]
+        public string Line1 { get; set; } = string.Empty;
+
+        [Display(Name = "Address Line 2")]
+        public string Line2 { get; set; } = string.Empty;
 
         [Required(ErrorMessage = "Please enter a city name")]
-        public string City { get; set; }
+        public string City { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Please enter a state")]
-        public string State { get; set; }
+        [Required(ErrorMessage = "Please enter a province")]
+        public string Province { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Please enter a zip code")]
-        public string Zip { get; set; }
+        public string Zip { get; set; } = string.Empty;
 
-        [Required(ErrorMessage = "Please enter a country name")]
-        public string Country { get; set; }
+        [Required(ErrorMessage = "Please select a country")]
+        public string Country { get; set; } = string.Empty;
 
         public bool GiftWrap { get; set; }
 

@@ -1,5 +1,4 @@
-﻿// Models/ViewModels/CartIndexViewModel.cs
-namespace SportsStore.Models.ViewModels
+﻿namespace SportsStore.Models.ViewModels
 {
     public class CartIndexViewModel
     {

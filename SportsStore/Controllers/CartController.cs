@@ -1,14 +1,15 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Linq;
+using Microsoft.AspNetCore.Mvc;
 using SportsStore.Models;
 using SportsStore.Models.ViewModels;
-using System.Linq;
+using SportsStore.Infrastructure;
 
 namespace SportsStore.Controllers
 {
     public class CartController : Controller
     {
-        private IProductRepository repository;
-        private Cart cart;
+        private readonly IProductRepository repository;
+        private readonly Cart cart;
 
         public CartController(IProductRepository repo, Cart cartService)
         {
@@ -21,26 +22,34 @@ namespace SportsStore.Controllers
             return View(new CartIndexViewModel
             {
                 Cart = cart,
-                ReturnUrl = returnUrl
+                ReturnUrl = returnUrl ?? "/"
             });
         }
 
-        public RedirectToActionResult AddToCart(int productId, string returnUrl)
+        [HttpPost]
+        public IActionResult AddToCart(int productId, string returnUrl)
         {
-            Product product = repository.Products
+            // Find the product
+            Product? product = repository.Products
                 .FirstOrDefault(p => p.ProductID == productId);
 
             if (product != null)
             {
+                // Add to cart
                 cart.AddItem(product, 1);
+
+                // Debug information - you can remove this in production
+                TempData["CartDebug"] = $"Added product {product.Name} to cart. Cart now has {cart.Lines.Count()} items.";
             }
 
-            return RedirectToAction("Index", new { returnUrl });
+            // Redirect to cart page
+            return RedirectToAction("Index", new { returnUrl = returnUrl ?? "/" });
         }
 
-        public RedirectToActionResult RemoveFromCart(int productId, string returnUrl)
+        [HttpPost]
+        public IActionResult RemoveFromCart(int productId, string returnUrl)
         {
-            Product product = repository.Products
+            Product? product = repository.Products
                 .FirstOrDefault(p => p.ProductID == productId);
 
             if (product != null)
@@ -48,7 +57,21 @@ namespace SportsStore.Controllers
                 cart.RemoveLine(product);
             }
 
-            return RedirectToAction("Index", new { returnUrl });
+            return RedirectToAction("Index", new { returnUrl = returnUrl ?? "/" });
+        }
+
+        [HttpPost]
+        public IActionResult UpdateCart(int productId, int quantity, string returnUrl)
+        {
+            Product? product = repository.Products
+                .FirstOrDefault(p => p.ProductID == productId);
+
+            if (product != null)
+            {
+                cart.UpdateQuantity(product, quantity);
+            }
+
+            return RedirectToAction("Index", new { returnUrl = returnUrl ?? "/" });
         }
     }
 }

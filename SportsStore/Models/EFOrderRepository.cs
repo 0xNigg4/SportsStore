@@ -5,7 +5,7 @@ namespace SportsStore.Models
 {
     public class EFOrderRepository : IOrderRepository
     {
-        private ApplicationDbContext context;
+        private readonly ApplicationDbContext context;
 
         public EFOrderRepository(ApplicationDbContext ctx)
         {
@@ -18,14 +18,28 @@ namespace SportsStore.Models
 
         public void SaveOrder(Order order)
         {
-            context.AttachRange(order.Lines.Select(l => l.Product));
+            context.ChangeTracker.Clear();
+
+            foreach (var line in order.Lines)
+            {
+                context.Attach(line.Product);
+            }
 
             if (order.OrderID == 0)
             {
                 context.Orders.Add(order);
             }
 
-            context.SaveChanges();
+            try
+            {
+                context.SaveChanges();
+            }
+            catch (DbUpdateException ex)
+            {
+                System.Diagnostics.Debug.WriteLine($"Error saving order: {ex.Message}");
+
+                throw;
+            }
         }
     }
 }

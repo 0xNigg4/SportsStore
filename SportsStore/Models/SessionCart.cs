@@ -10,14 +10,17 @@ namespace SportsStore.Models
     {
         public static Cart GetCart(IServiceProvider services)
         {
-            ISession session = services.GetRequiredService<IHttpContextAccessor>()?.HttpContext.Session;
+            ISession? session = services.GetRequiredService<IHttpContextAccessor>()?.HttpContext?.Session;
+
             SessionCart cart = session?.GetJson<SessionCart>("Cart") ?? new SessionCart();
-            cart.Session = session;
+
+            cart.Session = session ?? throw new InvalidOperationException("Cannot create SessionCart: HTTP session is not available");
+
             return cart;
         }
 
         [JsonIgnore]
-        public ISession Session { get; set; }
+        public ISession Session { get; set; } = null!;
 
         public override void AddItem(Product product, int quantity)
         {
@@ -35,6 +38,12 @@ namespace SportsStore.Models
         {
             base.Clear();
             Session.Remove("Cart");
+        }
+
+        public override void UpdateQuantity(Product product, int quantity)
+        {
+            base.UpdateQuantity(product, quantity);
+            Session.SetJson("Cart", this);
         }
     }
 }

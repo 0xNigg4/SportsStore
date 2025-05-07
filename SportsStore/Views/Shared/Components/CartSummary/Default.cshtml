@@ -5,8 +5,14 @@
     {
         <a asp-controller="Cart" asp-action="Index" class="btn btn-sm btn-primary">
             <i class="fa fa-shopping-cart"></i>
-            @Model.Lines.Sum(x => x.Quantity) item(s)
-            @Model.ComputeTotalValue().ToString("c")
+            <span class="badge bg-danger">@Model.Lines.Sum(x => x.Quantity)</span> item(s)
+            ₱@Model.ComputeTotalValue().ToString("N2")
+        </a>
+    }
+    else
+    {
+        <a asp-controller="Cart" asp-action="Index" class="btn btn-sm btn-outline-light">
+            <i class="fa fa-shopping-cart"></i> Cart
         </a>
     }
 </div>

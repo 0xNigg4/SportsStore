@@ -1,5 +1,4 @@
-﻿// Components/CartSummaryViewComponent.cs
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using SportsStore.Models;
 
 namespace SportsStore.Components

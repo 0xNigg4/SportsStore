@@ -1,5 +1,4 @@
-﻿// Models/ViewModels/ProductsListViewModel.cs
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace SportsStore.Models.ViewModels
 {
